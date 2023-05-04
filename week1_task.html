@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="week1_task.css" media="all" />
+    <script src="https://kit.fontawesome.com/3b481a3945.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Task One JS Fundamentals</title>
+</head>
+<body onload="fetchData()">
+    <table style = "width:100%">
+        <thead>
+        <tr>
+            <th style="width:3%"></th>
+            <th>MemberID</th>
+            <th>Name</th>
+            <th style="color:black">Amount</th>
+            <th>Type</th>
+            <th>Bank</th>
+            <th>Status</th>
+            <th>Action</th>
+            <th>Remark</th>
+            <th>Date</th>
+            <th>Update date</th>
+        </tr>
+        </thead>
+
+        <tbody id="tbody">
+        
+        </tbody>
+    </table>
+    <script src="./week1_task.js"></script>
+    <script>
+        
+
+        const makeTable=(data)=>{
+            let output = document.getElementById('tbody');
+
+          data.map(post=>{
+                return   output.innerHTML += `
+
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>${post.depositId}</td>
+                    <td>${post.memberName}</td>
+                    <td style="color:rgb(32, 153, 32)">${formatNumberWithShillings(post.amount) }</td>
+                    <td>${post.transactionType}</td>
+                    <td>${post.bankName}</td>
+                    <td>${post.transactionStatus}</td>
+                    <td><button class="button button1"><i class="fa fa-check"></i> Approve</button>  <button class="button button2"><i class="fa fa-ban"></i> Reject</button></td>
+                    <td>${post.remarks}</td>
+                    <td>${post.createdAt}</td>
+                    <td>${post.updatedAt==null?"Not yet":post.updatedAt}</td>
+                </tr>
+
+                `
+            })
+        }
+        const fetchData=async()=> {
+            try{
+                const response=await fetch('http://134.209.230.15:8780/api/v1/deposits')
+                const data=await response.json()
+                makeTable(data.deposits)
+               
+            }catch(error){
+                console.log(error.message)
+            }
+          
+        }
+     </script>
+</body>
+</html>
